@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { UserContext } from "../UserContext";
 
 const postImage = async ({ image }) => {
   const formData = new FormData();
@@ -11,27 +13,33 @@ const postImage = async ({ image }) => {
   return result.data;
 };
 
-function Register({ changeLoggedState }) {
+function Register() {
   const [banner, setBanner] = useState();
   const [username, setUsername] = useState();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [error, setError] = useState();
 
+  const { dispatch } = useContext(UserContext);
+  const navigate = useNavigate();
+
   const submit = async (event) => {
     event.preventDefault();
-    const user = {
+    const newUser = {
       banner: banner,
       username: username,
       email: email,
       password: password,
     };
     await axios
-      .post("/api/auth/register", user)
-      .then(() => changeLoggedState(true))
+      .post("/api/auth/register", newUser)
+      .then((res) => {
+        dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
+        navigate("/");
+      })
       .catch(async (err) => {
         if (err.response) {
-          console.log(banner);
+          dispatch({ type: "LOGIN_FAILURE" });
           setError(err.response.data);
           const deletedBanner = banner;
           setBanner();

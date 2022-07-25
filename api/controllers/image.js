@@ -43,6 +43,6 @@ export const deleteFile = (fileKey) => {
 
   s3.deleteObject(deleteParams, (err, data) => {
     if (err) return err;
-    return "Image deleted";
+    return data;
   });
 };

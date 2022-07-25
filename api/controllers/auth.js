@@ -42,8 +42,17 @@ export const register = async (req, res, next) => {
       isAdmin: req.body.isAdmin,
     });
 
-    await newUser.save();
-    res.status(200).json(newUser);
+    const user = await newUser.save();
+    const { isAdmin, password, ...otherDetails } = user._doc;
+
+    const token = jwt.sign(
+      { id: user._id, username: user.username, isAdmin: user.isAdmin },
+      process.env.JWT_SECRET
+    );
+
+    res.cookie("user_token", token, { httpOnly: true });
+
+    res.status(200).json(otherDetails);
   } catch (err) {
     throw err;
   }

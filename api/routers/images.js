@@ -23,8 +23,8 @@ router.post("/", upload.single("image"), async (req, res) => {
   res.send({ imagePath: `/api/image/${result.Key}` });
 });
 
-router.delete("/:key", (req, res, next) => {
-  deleteFile(req.params.key);
+router.delete("/:key", async (req, res, next) => {
+  await deleteFile(req.params.key);
 });
 
 export default router;

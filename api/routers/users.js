@@ -8,11 +8,6 @@ import {
   getUsers,
   deleteUser,
 } from "../controllers/user.js";
-// import { upload } from "../index.js";
-// import { uploadFile } from "../s3.js";
-import fs from "fs";
-import util from "util";
-const unlinkFile = util.promisify(fs.unlink);
 
 const router = express.Router();
 router.put(
@@ -31,12 +26,6 @@ router.put(
     }
     if (!req.body.email) req.body.email = originalUser.email;
     if (!req.body.password) res.new_password = false;
-    if (req.body.photo) {
-      upload.single("image");
-      uploadFile(req, res, next);
-      await unlinkFile(req.file.path);
-      req.body.photo = res.result.Key;
-    }
     validateUser(req, res, next);
   },
   (req, res, next) => {

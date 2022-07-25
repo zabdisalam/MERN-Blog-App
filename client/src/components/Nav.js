@@ -1,4 +1,11 @@
+import { useContext } from "react";
+import { UserContext } from "../UserContext";
+import { useNavigate } from "react-router-dom";
+
 function Nav({ isLoggedIn, page }) {
+  const { dispatch } = useContext(UserContext);
+  const navigate = useNavigate();
+
   return (
     <nav className="navbar navbar-expand-lg header-dark">
       <div className="container-fluid justify-content-center">
@@ -18,9 +25,17 @@ function Nav({ isLoggedIn, page }) {
         )}
         {isLoggedIn && (
           <div className="row me-4">
-            <a href="/logout" type="button" className="btn btn-outline-dark">
+            <button
+              onClick={() => {
+                dispatch({ type: "LOGOUT" });
+                navigate("/");
+                navigate(0);
+              }}
+              type="button"
+              className="btn btn-outline-dark"
+            >
               Logout
-            </a>
+            </button>
           </div>
         )}
         {(page !== "/register" || page !== "/login") && !isLoggedIn && (

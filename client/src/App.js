@@ -1,3 +1,5 @@
+import { useContext, useEffect } from "react";
+import { UserContext } from "./UserContext";
 import MyProfile from "./components/MyProfile";
 import UserProfile from "./components/UserProfile";
 import Home from "./components/Home";
@@ -12,6 +14,13 @@ import NewPost from "./components/NewPost";
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const sampleLocation = useLocation();
+
+  const { user } = useContext(UserContext);
+
+  useEffect(() => {
+    if (user) setLoggedIn(true);
+  }, [user]);
+
   return (
     <div className="App">
       <Header page={sampleLocation.pathname} />

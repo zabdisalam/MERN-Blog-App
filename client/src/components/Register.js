@@ -36,6 +36,7 @@ function Register() {
       .then((res) => {
         dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
         navigate("/");
+        navigate(0);
       })
       .catch(async (err) => {
         if (err.response) {

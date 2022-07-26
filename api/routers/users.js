@@ -35,7 +35,7 @@ router.put(
   updateUser
 );
 
-router.get("/", verifyToken, getUser);
+router.get("/:id", getUser);
 
 router.get("/all", verifyToken, (req, res, next) => {
   if (!res.decoded_user_token.isAdmin)

@@ -628,6 +628,7 @@
  .img-fluid {
    max-width: 100%;
    height: auto;
+   border-radius: 7px;
  }
  
  .img-thumbnail {
@@ -4966,10 +4967,6 @@
    margin-bottom: 0;
  }
  
- .card-link + .card-link {
-   margin-left: 1.5rem;
- }
- 
  .card-header {
    padding: 0.75rem 1.5rem;
    margin-bottom: 0;
@@ -5828,6 +5825,61 @@
    background-color: #287a19;
    border-color: #287a19;
  }
+
+ .post {
+  width: 385px;
+  margin: 0px 25px 40px 25px;
+}
+
+.postImg {
+  border-radius: 7px;
+}
+
+.postInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.postCreator {
+  font-style:italic;
+  text-align: right;
+}
+
+.postCat {
+  font-size: 13px;
+  line-height: 20px;
+  margin-top: 15px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.postTitle {
+  font-family: "Josefin Sans", sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  margin-top: 15px;
+  cursor: pointer;
+}
+
+.postDesc {
+  font-family: "Varela Round", sans-serif;
+  font-size: 14px;
+  color: #444;
+  line-height: 24px;
+  margin-top: 15px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+}
+
+.posts{
+  flex: 9;
+  display: flex;
+  flex-wrap: wrap;
+  margin: 20px;
+}
  
  .list-group-item-info {
    color: #373b92;

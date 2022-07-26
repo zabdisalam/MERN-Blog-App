@@ -14,8 +14,8 @@ export const updateUser = async (req, res, next) => {
 };
 
 export const getUser = async (req, res, next) => {
-  const user = await User.findById(res.decoded_user_token.id);
-  if (!user) return res.status(404).send("User not logged in");
+  const user = await User.findById(req.params.id);
+  if (!user) return res.status(404).send("User not found");
   const { password, isAdmin, ...otherDetails } = user._doc;
   res.status(200).json({ ...otherDetails });
 };

@@ -5,7 +5,7 @@ import UserProfile from "./components/UserProfile";
 import Home from "./components/Home";
 import Header from "./components/Header";
 import Nav from "./components/Nav";
-import { useLocation, Route, Routes, Navigate } from "react-router-dom";
+import { useLocation, Route, Routes } from "react-router-dom";
 import { useState } from "react";
 import Register from "./components/Register";
 import Login from "./components/Login";
@@ -29,16 +29,9 @@ function App() {
 
       <Routes>
         <Route path="/" element={<Home />} />
-        {/* we have to setLoggedIn(false) when path is sent to /logout and delete token*/}
-        <Route path="/logout" element={<Navigate replace to="/" />} />
         <Route path="/myprofile" element={<MyProfile />} />
         <Route path="/userprofile" element={<UserProfile />} />
-        <Route
-          path="/register"
-          element={
-            <Register changeLoggedState={(loggedIn) => setLoggedIn(loggedIn)} />
-          }
-        />
+        <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/newpost" element={<NewPost />} />
       </Routes>

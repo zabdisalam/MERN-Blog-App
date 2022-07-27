@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { UserContext } from "../UserContext";
+import { UserContext } from "../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
 
 function Nav({ isLoggedIn, page }) {

@@ -3,7 +3,7 @@ import User from "../models/User.js";
 import Joi from "joi";
 
 export const validatePost = (req, res, next) => {
-  req.body.user = res.decoded_user_token.id;
+  req.body.user = res.decoded_user_token.username;
   const schema = Joi.object({
     title: Joi.string().required(),
     description: Joi.string().required(),
@@ -30,14 +30,17 @@ export const checkPostId = async (req, res, next) => {
 export const createPost = async (req, res, next) => {
   const post = new Post(req.body);
   await post.save();
-  await User.findByIdAndUpdate(post.user, {
-    $push: { posts: post._id },
-  });
+  await User.findOneAndUpdate(
+    { username: post.user },
+    {
+      $push: { posts: post._id },
+    }
+  );
   res.status(200).json(post);
 };
 
 export const updatePost = async (req, res, next) => {
-  if (res.post.user != res.decoded_user_token.id)
+  if (res.post.user != res.decoded_user_token.username)
     return res.status(401).send("This is not your post");
   const post = await Post.findByIdAndUpdate(
     req.params.id,
@@ -48,12 +51,15 @@ export const updatePost = async (req, res, next) => {
 };
 
 export const deletePost = async (req, res, next) => {
-  if (res.post.user != res.decoded_user_token.id)
+  if (res.post.user != res.decoded_user_token.username)
     return res.status(401).send("This is not your post");
   await Post.findByIdAndDelete(req.params.id);
-  await User.findByIdAndUpdate(res.post.user, {
-    $pull: { posts: res.post._id },
-  });
+  await User.findOneAndUpdate(
+    { username: res.post.user },
+    {
+      $pull: { posts: res.post._id },
+    }
+  );
   res.status(200).send("Post has been deleted");
 };
 

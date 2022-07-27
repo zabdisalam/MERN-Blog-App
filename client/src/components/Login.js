@@ -1,13 +1,20 @@
 import React, { useContext } from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { UserContext } from "../UserContext";
+import { UserContext } from "../contexts/UserContext";
+import { HeaderContext } from "../contexts/HeaderContext";
 
 function Login() {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
   const [error, setError] = useState();
+
+  const header = useContext(HeaderContext);
+
+  useEffect(() => {
+    header.setHeaderTitle("Login");
+  }, [header]);
 
   const { dispatch } = useContext(UserContext);
   const navigate = useNavigate();

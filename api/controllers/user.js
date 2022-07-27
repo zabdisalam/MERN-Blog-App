@@ -14,10 +14,16 @@ export const updateUser = async (req, res, next) => {
 };
 
 export const getUser = async (req, res, next) => {
-  const user = await User.findById(req.params.id);
-  if (!user) return res.status(404).send("User not found");
-  const { password, isAdmin, ...otherDetails } = user._doc;
-  res.status(200).json({ ...otherDetails });
+  let user;
+  await User.findById(req.params.id)
+    .then((res) => {
+      const { password, isAdmin, ...otherDetails } = res._doc;
+      user = { ...otherDetails };
+    })
+    .catch((err) => {
+      return res.status(404).send("User not found");
+    });
+  return res.status(200).json(user);
 };
 
 export const getUsers = async (req, res, next) => {

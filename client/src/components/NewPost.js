@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { UserContext } from "../UserContext";
+import { HeaderContext } from "../contexts/HeaderContext";
 
 const postImage = async ({ image }) => {
   const formData = new FormData();
@@ -17,30 +17,33 @@ function NewPost() {
   const [photo, setPhoto] = useState();
   const [title, setTitle] = useState();
   const [description, setDescription] = useState();
-  const [category, setCategory] = useState();
+  const [category, setCategory] = useState("Food blogs");
   const [error, setError] = useState();
 
-  const { dispatch } = useContext(UserContext);
+  const header = useContext(HeaderContext);
+
+  useEffect(() => {
+    header.setHeaderTitle("Create Post");
+  }, [header]);
+
   const navigate = useNavigate();
 
   const submit = async (event) => {
     event.preventDefault();
-    const newUser = {
+    const newPost = {
       photo: photo,
       title: title,
       description: description,
       category: category,
     };
     await axios
-      .post("/api/post", newUser)
+      .post("/api/post", newPost)
       .then((res) => {
-        dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
         navigate("/");
         navigate(0);
       })
       .catch(async (err) => {
         if (err.response) {
-          dispatch({ type: "LOGIN_FAILURE" });
           setError(err.response.data);
           const deletedBanner = photo;
           setPhoto();

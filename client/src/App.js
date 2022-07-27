@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import { UserContext } from "./UserContext";
+import { UserContext } from "./contexts/UserContext";
 import MyProfile from "./components/MyProfile";
 import UserProfile from "./components/UserProfile";
 import Home from "./components/Home";
@@ -10,6 +10,7 @@ import { useState } from "react";
 import Register from "./components/Register";
 import Login from "./components/Login";
 import NewPost from "./components/NewPost";
+import SinglePost from "./components/SinglePost";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -31,6 +32,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/myprofile" element={<MyProfile />} />
         <Route path="/userprofile" element={<UserProfile />} />
+        <Route path="/post/:postId" element={<SinglePost />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/newpost" element={<NewPost />} />

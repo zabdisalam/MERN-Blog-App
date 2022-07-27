@@ -1,8 +1,9 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { UserContext } from "../UserContext";
+import { UserContext } from "../contexts/UserContext";
+import { HeaderContext } from "../contexts/HeaderContext";
 
 const postImage = async ({ image }) => {
   const formData = new FormData();
@@ -23,6 +24,12 @@ function Register() {
   const { dispatch } = useContext(UserContext);
   const navigate = useNavigate();
 
+  const header = useContext(HeaderContext);
+
+  useEffect(() => {
+    header.setHeaderTitle("Register");
+  }, [header]);
+
   const submit = async (event) => {
     event.preventDefault();
     const newUser = {
@@ -36,7 +43,6 @@ function Register() {
       .then((res) => {
         dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
         navigate("/");
-        navigate(0);
       })
       .catch(async (err) => {
         if (err.response) {

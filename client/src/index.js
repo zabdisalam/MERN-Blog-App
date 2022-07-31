@@ -9,12 +9,12 @@ import { HeaderProvider } from "./contexts/HeaderContext";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <HeaderProvider>
-      <UserProvider>
-        <Router>
+    <Router>
+      <HeaderProvider>
+        <UserProvider>
           <App />
-        </Router>
-      </UserProvider>
-    </HeaderProvider>
+        </UserProvider>
+      </HeaderProvider>
+    </Router>
   </React.StrictMode>
 );

@@ -8,6 +8,8 @@ import {
   getPost,
   getPosts,
   checkPostId,
+  checkUsername,
+  getPostsByUsername,
 } from "../controllers/post.js";
 
 const router = express.Router();
@@ -30,6 +32,8 @@ router.put(
 router.delete("/:id", verifyToken, checkPostId, deletePost);
 
 router.get("/:id", checkPostId, getPost);
+
+router.get("/username/:user", checkUsername, getPostsByUsername);
 
 router.get("/", getPosts);
 

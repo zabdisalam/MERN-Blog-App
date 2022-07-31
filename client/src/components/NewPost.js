@@ -40,7 +40,6 @@ function NewPost() {
       .post("/api/post", newPost)
       .then((res) => {
         navigate("/");
-        navigate(0);
       })
       .catch(async (err) => {
         if (err.response) {
@@ -59,10 +58,7 @@ function NewPost() {
   };
 
   return (
-    <div
-      style={{ width: 500, marginTop: 20 }}
-      className="container justify-content-center"
-    >
+    <div style={{ maxWidth: 500 }} className="container mt-5">
       <div className="card border-primary ">
         <div className="card-body p-5">
           <form onSubmit={submit} method="post">
@@ -78,7 +74,7 @@ function NewPost() {
             )}
             <div className="form-group mb-4">
               {photo ? (
-                <img src={photo} alt="img" className="photo"></img>
+                <img src={photo} alt="img" className="img-fluid"></img>
               ) : (
                 <i className="fa fa-picture-o fa-3x text-info"></i>
               )}

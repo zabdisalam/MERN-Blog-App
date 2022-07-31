@@ -9,16 +9,16 @@ import {
   validateComment,
   checkCommentId,
   checkPostId,
+  getPostComments,
+  getCommentsByUsername,
 } from "../controllers/comment.js";
+import { checkUsername } from "../controllers/post.js";
 const router = express.Router();
 
 router.post(
   "/:postid",
   verifyToken,
-  async (req, res, next) => {
-    req.params.id = req.params.postid;
-    checkPostId(req, res, next);
-  },
+  checkPostId,
   validateComment,
   createComment
 );
@@ -31,12 +31,17 @@ router.put(
   verifyToken,
   async (req, res, next) => {
     if (!req.body.text) req.body.text = res.comment.text;
+    req.body.post = res.comment.post;
     validateComment(req, res, next);
   },
   updateComment
 );
 
 router.get("/:id", checkCommentId, getComment);
+
+router.get("/post/:postid", checkPostId, getPostComments);
+
+router.get("/username/:user", checkUsername, getCommentsByUsername);
 
 router.get("/", getComments);
 

@@ -23,7 +23,17 @@ export const checkPostId = async (req, res, next) => {
     res.post = post;
     next();
   } catch (err) {
-    res.status(500).send("Post does not exist");
+    return res.status(500).send("Post does not exist");
+  }
+};
+
+export const checkUsername = async (req, res, next) => {
+  try {
+    await User.findOne({ username: req.params.user });
+    next();
+  } catch (err) {
+    console.log(req.params.user);
+    return res.status(500).send("Post does not exist");
   }
 };
 
@@ -64,8 +74,27 @@ export const deletePost = async (req, res, next) => {
 };
 
 export const getPost = async (req, res, next) => {
-  const post = await Post.findById(req.params.id);
-  res.status(200).json(post);
+  let post;
+  await Post.findById(req.params.id)
+    .then((res) => {
+      post = res;
+    })
+    .catch((err) => {
+      return res.status(404).send("Post not found");
+    });
+  return res.status(200).json(post);
+};
+
+export const getPostsByUsername = async (req, res, next) => {
+  let posts;
+  await Post.find({ user: req.params.user })
+    .then((res) => {
+      posts = res;
+    })
+    .catch((err) => {
+      return res.status(404).send(`${req.params.user} has no posts`);
+    });
+  return res.status(200).json(posts);
 };
 
 export const getPosts = async (req, res, next) => {

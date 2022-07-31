@@ -62,10 +62,7 @@ function Register() {
   };
 
   return (
-    <div
-      style={{ width: 500, marginTop: 20 }}
-      className="container justify-content-center"
-    >
+    <div style={{ maxWidth: 500 }} className="container mt-5">
       <div className="card border-primary ">
         <div className="card-body p-5">
           <form onSubmit={submit} method="post">
@@ -79,13 +76,11 @@ function Register() {
                 {error}
               </div>
             )}
-            <div className={`rounded-circle align-items-center`} alt="Avatar">
-              {banner ? (
-                <img src={banner} alt="Avatar" className="avatar"></img>
-              ) : (
-                <i className="fas fa-user fa-3x text-info"></i>
-              )}
-            </div>
+            {banner ? (
+              <img src={banner} alt="Avatar" className="avatar"></img>
+            ) : (
+              <i className="fas fa-user fa-3x text-info"></i>
+            )}
             <div className="form-group mb-4">
               <label htmlFor="bannerInput">Avatar</label>
               <input

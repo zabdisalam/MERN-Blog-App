@@ -1,6 +1,5 @@
 import { useContext, useEffect } from "react";
 import { UserContext } from "./contexts/UserContext";
-import MyProfile from "./components/MyProfile";
 import UserProfile from "./components/UserProfile";
 import Home from "./components/Home";
 import Header from "./components/Header";
@@ -30,8 +29,7 @@ function App() {
 
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/myprofile" element={<MyProfile />} />
-        <Route path="/userprofile" element={<UserProfile />} />
+        <Route path="/user" element={<UserProfile />} />
         <Route path="/post/:postId" element={<SinglePost />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />

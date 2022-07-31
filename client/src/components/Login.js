@@ -40,10 +40,7 @@ function Login() {
   };
 
   return (
-    <div
-      style={{ width: 500, marginTop: 20 }}
-      className="container justify-content-center"
-    >
+    <div style={{ maxWidth: 500 }} className="container mt-5">
       <div className="card border-primary ">
         <div className="card-body p-5">
           <form onSubmit={submit} method="post">

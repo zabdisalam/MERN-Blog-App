@@ -1,6 +1,6 @@
 import { createContext, useEffect, useReducer } from "react";
 
-let user = localStorage.getItem("user");
+let user = sessionStorage.getItem("user");
 try {
   user = JSON.parse(user);
 } catch (err) {
@@ -11,6 +11,8 @@ export const UserContext = createContext(user);
 
 const UserReducer = (state, action) => {
   switch (action.type) {
+    case "UPDATE_USER":
+      return action.payload;
     case "LOGIN_SUCCESS":
       return action.payload;
     case "LOGIN_FAILURE":
@@ -26,7 +28,7 @@ export const UserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(UserReducer, user);
 
   useEffect(() => {
-    localStorage.setItem("user", JSON.stringify(state));
+    sessionStorage.setItem("user", JSON.stringify(state));
   }, [state]);
 
   return (

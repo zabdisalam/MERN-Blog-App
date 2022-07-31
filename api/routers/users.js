@@ -4,9 +4,10 @@ import { verifyToken } from "../utils/verifyToken.js";
 import { hashPass, validateUser } from "../controllers/auth.js";
 import {
   updateUser,
-  getUser,
+  getUserByUsername,
   getUsers,
   deleteUser,
+  getUserById,
 } from "../controllers/user.js";
 
 const router = express.Router();
@@ -35,7 +36,9 @@ router.put(
   updateUser
 );
 
-router.get("/:id", getUser);
+router.get("/:id", getUserById);
+
+router.get("/username/:user", getUserByUsername);
 
 router.get("/all", verifyToken, (req, res, next) => {
   if (!res.decoded_user_token.isAdmin)

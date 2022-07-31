@@ -7,9 +7,13 @@ import { HeaderContext } from "../contexts/HeaderContext";
 const postImage = async ({ image }) => {
   const formData = new FormData();
   formData.append("image", image);
-  const result = await axios.post("/api/image", formData, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
+  const result = await axios.post(
+    "http://3.99.131.208:8000/api/image",
+    formData,
+    {
+      headers: { "Content-Type": "multipart/form-data" },
+    }
+  );
   return result.data;
 };
 
@@ -37,7 +41,7 @@ function NewPost() {
       category: category,
     };
     await axios
-      .post("/api/post", newPost)
+      .post("http://3.99.131.208:8000/api/post", newPost)
       .then((res) => {
         navigate("/");
       })

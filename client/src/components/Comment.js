@@ -6,9 +6,13 @@ import { useNavigate, Link } from "react-router-dom";
 const postImage = async ({ image }) => {
   const formData = new FormData();
   formData.append("image", image);
-  const result = await axios.post("/api/image", formData, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
+  const result = await axios.post(
+    "http://3.99.131.208:8000/api/image",
+    formData,
+    {
+      headers: { "Content-Type": "multipart/form-data" },
+    }
+  );
   return result.data;
 };
 
@@ -24,9 +28,11 @@ function Comment({ data }) {
 
   useEffect(() => {
     const getUserAvatar = async () => {
-      await axios.get(`/api/user/username/${comment.user}`).then((res) => {
-        setAvatar(res.data.banner);
-      });
+      await axios
+        .get(`http://3.99.131.208:8000/api/user/username/${comment.user}`)
+        .then((res) => {
+          setAvatar(res.data.banner);
+        });
     };
     getUserAvatar();
   }, [comment]);
@@ -37,7 +43,7 @@ function Comment({ data }) {
       photo: photo,
     };
     await axios
-      .put(`/api/comment/${comment._id}`, newComment)
+      .put(`http://3.99.131.208:8000/api/comment/${comment._id}`, newComment)
       .then(async (res) => {
         setUpdateMode(false);
         if (comment.photo !== photo) {
@@ -49,14 +55,19 @@ function Comment({ data }) {
       })
       .catch(async () => {
         if (comment.photo !== photo)
-          await axios.delete(photo).then(() => setPhoto(comment.photo));
+          await axios
+            .delete(`http://3.99.131.208:8000${photo}`)
+            .then(() => setPhoto(comment.photo));
       });
   };
 
   const handleDelete = async () => {
     try {
-      const deletedComment = await axios.delete(`/api/comment/${comment._id}`);
-      if (deletedComment.photo) await axios.delete(deletedComment.photo);
+      const deletedComment = await axios.delete(
+        `http://3.99.131.208:8000/api/comment/${comment._id}`
+      );
+      if (deletedComment.photo)
+        await axios.delete(`http://3.99.131.208:8000${deletedComment.photo}`);
       navigate(0);
     } catch (err) {
       console.log(err);
@@ -77,7 +88,11 @@ function Comment({ data }) {
             to={`/user/?user=${comment.user}`}
             className="text-decoration-none"
           >
-            <img src={avatar} alt="Avatar" className="avatar"></img>
+            <img
+              src={`http://3.99.131.208:8000${avatar}`}
+              alt="Avatar"
+              className="avatar"
+            ></img>
             <span className=" h5 text-black ">{comment?.user}</span>
           </Link>
 
@@ -113,13 +128,21 @@ function Comment({ data }) {
       )}
       <div className="mx-5">
         {comment?.photo && !updateMode && (
-          <img src={comment.photo} alt="" className="img-fluid" />
+          <img
+            src={`http://3.99.131.208:8000${comment.photo}`}
+            alt=""
+            className="img-fluid"
+          />
         )}
         {comment?.photo && updateMode && (
           <div className="personal-image col col-sm-2 my-4 mx-0">
             <label htmlFor="photoInput">
               <figure className="personal-figure">
-                <img src={photo} className="postImg banner" alt="img" />
+                <img
+                  src={`http://3.99.131.208:8000${photo}`}
+                  className="postImg banner"
+                  alt="img"
+                />
                 <input
                   type="file"
                   onChange={fileSelected}

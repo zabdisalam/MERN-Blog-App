@@ -26,7 +26,7 @@ function Login() {
       password: password,
     };
     await axios
-      .post("/api/auth/login", loginUser)
+      .post("http://3.99.131.208:8000/api/auth/login", loginUser)
       .then((res) => {
         dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
         navigate("/");

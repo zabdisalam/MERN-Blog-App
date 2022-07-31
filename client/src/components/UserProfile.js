@@ -9,9 +9,13 @@ import Post from "./Post";
 const postImage = async ({ image }) => {
   const formData = new FormData();
   formData.append("image", image);
-  const result = await axios.post("/api/image", formData, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
+  const result = await axios.post(
+    "http://3.99.131.208:8000/api/image",
+    formData,
+    {
+      headers: { "Content-Type": "multipart/form-data" },
+    }
+  );
   return result.data;
 };
 
@@ -34,7 +38,7 @@ function UserProfile() {
     header.setHeaderTitle("Account");
     const fetchUser = async () => {
       await axios
-        .get(`/api/user/username/${path}`)
+        .get(`http://3.99.131.208:8000/api/user/username/${path}`)
         .then((res) => {
           setData(res.data);
           setUsername(res.data.username);
@@ -52,12 +56,16 @@ function UserProfile() {
 
   useEffect(() => {
     const fetchPostsandComments = async () => {
-      await axios.get(`/api/post/username/${data.username}`).then((res) => {
-        setPosts(res.data);
-      });
-      await axios.get(`/api/comment/username/${data.username}`).then((res) => {
-        setComments(res.data);
-      });
+      await axios
+        .get(`http://3.99.131.208:8000/api/post/username/${data.username}`)
+        .then((res) => {
+          setPosts(res.data);
+        });
+      await axios
+        .get(`http://3.99.131.208:8000/api/comment/username/${data.username}`)
+        .then((res) => {
+          setComments(res.data);
+        });
     };
     if (Object.keys(data).length !== 0) {
       fetchPostsandComments();
@@ -73,20 +81,24 @@ function UserProfile() {
     console.log(updatedUser);
     console.log(data.banner);
     await axios
-      .put("/api/user/", updatedUser)
+      .put("http://3.99.131.208:8000/api/user/", updatedUser)
       .then(async (res) => {
         setUpdateMode(false);
         setPath(username);
         dispatch({ type: "UPDATE_USER", payload: res.data });
         if (data.banner !== banner) {
-          await axios.delete(data.banner).then(() => {
-            setData(res.data);
-          });
+          await axios
+            .delete(`http://3.99.131.208:8000${data.banner}`)
+            .then(() => {
+              setData(res.data);
+            });
         }
       })
       .catch(async (err) => {
         if (data.banner !== banner)
-          await axios.delete(banner).then(() => setBanner(data.banner));
+          await axios
+            .delete(`http://3.99.131.208:8000${banner}`)
+            .then(() => setBanner(data.banner));
         // deletes existing banner if user avatar cant be updated
       });
   };
@@ -114,7 +126,7 @@ function UserProfile() {
             {banner && !updateMode && (
               <div className="col col-sm-2">
                 <img
-                  src={banner}
+                  src={`http://3.99.131.208:8000${banner}`}
                   alt="Avatar"
                   className="personal-avatar banner"
                 ></img>
@@ -125,7 +137,7 @@ function UserProfile() {
                 <label htmlFor="bannerInput">
                   <figure className="personal-figure">
                     <img
-                      src={banner}
+                      src={`http://3.99.131.208:8000${banner}`}
                       className="personal-avatar banner"
                       alt="avatar"
                     />

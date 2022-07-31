@@ -6,9 +6,13 @@ import { UserContext } from "../contexts/UserContext";
 const postImage = async ({ image }) => {
   const formData = new FormData();
   formData.append("image", image);
-  const result = await axios.post("/api/image", formData, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
+  const result = await axios.post(
+    "http://3.99.131.208:8000/api/image",
+    formData,
+    {
+      headers: { "Content-Type": "multipart/form-data" },
+    }
+  );
   return result.data;
 };
 
@@ -27,9 +31,11 @@ function Post({ data }) {
 
   useEffect(() => {
     const getUserAvatar = async () => {
-      await axios.get(`/api/user/username/${post.user}`).then((res) => {
-        setAvatar(res.data.banner);
-      });
+      await axios
+        .get(`http://3.99.131.208:8000/api/user/username/${post.user}`)
+        .then((res) => {
+          setAvatar(res.data.banner);
+        });
     };
     getUserAvatar();
   }, [post]);
@@ -42,29 +48,32 @@ function Post({ data }) {
       description: desc,
     };
     await axios
-      .put(`/api/post/${post._id}`, updatedPost)
+      .put(`http://3.99.131.208:8000/api/post/${post._id}`, updatedPost)
       .then(async (res) => {
         setUpdateMode(false);
         if (post.photo !== banner) {
-          await axios.delete(post.photo).then(() => {
-            setPost(res.data);
-          });
+          await axios
+            .delete(`http://3.99.131.208:8000${post.photo}`)
+            .then(() => {
+              setPost(res.data);
+            });
         }
       })
       .catch(async () => {
         if (post.photo !== banner)
-          await axios.delete(banner).then(() => setBanner(post.photo));
+          await axios
+            .delete(`http://3.99.131.208:8000${banner}`)
+            .then(() => setBanner(post.photo));
         // deletes existing banner if post banner cant be updated
       });
   };
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`/api/post/${post.user}`);
-      setUpdateMode(false);
-      if (post.photo !== banner) await axios.delete(banner);
-      await axios.delete(post.photo);
+      await axios.delete(`http://3.99.131.208:8000/api/post/${post._id}`);
       navigate(0);
+      setUpdateMode(false);
+      await axios.delete(`http://3.99.131.208:8000${post.photo}`);
     } catch (err) {
       console.log(err);
     }
@@ -82,7 +91,11 @@ function Post({ data }) {
         <div className="personal-image col col-sm-2">
           <label htmlFor="bannerInput">
             <figure className="personal-figure">
-              <img src={banner} className="postImg banner" alt="avatar" />
+              <img
+                src={`http://3.99.131.208:8000${banner}`}
+                className="postImg banner"
+                alt="avatar"
+              />
               <input
                 type="file"
                 onChange={fileSelected}
@@ -100,7 +113,11 @@ function Post({ data }) {
           </label>
         </div>
       ) : (
-        <img src={banner} alt="" className="postImg" />
+        <img
+          src={`http://3.99.131.208:8000${banner}`}
+          alt=""
+          className="postImg"
+        />
       )}
       <div className="postInfo">
         {updateMode ? (
@@ -196,7 +213,7 @@ function Post({ data }) {
             </span>
             <img
               style={{ width: "40px", height: "40px" }}
-              src={avatar}
+              src={`http://3.99.131.208:8000${avatar}`}
               alt="Avatar"
               className="avatar m-1"
             ></img>

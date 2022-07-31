@@ -7,7 +7,9 @@ function Comments({ post }) {
 
   useEffect(() => {
     const getComments = async () => {
-      const res = await axios.get(`/api/comment/post/${post._id}`);
+      const res = await axios.get(
+        `http://3.99.131.208:8000/api/comment/post/${post._id}`
+      );
       setData(res.data);
     };
     getComments();

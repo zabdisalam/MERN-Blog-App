@@ -5,9 +5,13 @@ import axios from "axios";
 const postImage = async ({ image }) => {
   const formData = new FormData();
   formData.append("image", image);
-  const result = await axios.post("/api/image", formData, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
+  const result = await axios.post(
+    "http://3.99.131.208:8000/api/image",
+    formData,
+    {
+      headers: { "Content-Type": "multipart/form-data" },
+    }
+  );
   return result.data;
 };
 
@@ -25,7 +29,7 @@ function NewComment({ post }) {
       text: text,
     };
     await axios
-      .post(`/api/comment/${post._id}`, newComment)
+      .post(`http://3.99.131.208:8000/api/comment/${post._id}`, newComment)
       .then(() => {
         navigate(0);
       })

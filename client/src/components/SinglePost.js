@@ -10,9 +10,13 @@ import Comments from "./Comments";
 const postImage = async ({ image }) => {
   const formData = new FormData();
   formData.append("image", image);
-  const result = await axios.post("/api/image", formData, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
+  const result = await axios.post(
+    "http://3.99.131.208:8000/api/image",
+    formData,
+    {
+      headers: { "Content-Type": "multipart/form-data" },
+    }
+  );
   return result.data;
 };
 
@@ -33,9 +37,11 @@ function SinglePost() {
 
   useEffect(() => {
     const getUserAvatar = async () => {
-      await axios.get(`/api/user/username/${post.user}`).then((res) => {
-        setAvatar(res.data.banner);
-      });
+      await axios
+        .get(`http://3.99.131.208:8000/api/user/username/${post.user}`)
+        .then((res) => {
+          setAvatar(res.data.banner);
+        });
     };
     if (Object.keys(post).length !== 0) {
       getUserAvatar();
@@ -46,7 +52,7 @@ function SinglePost() {
   useLayoutEffect(() => {
     header.setHeaderTitle("Post");
     const getPost = async () => {
-      const res = await axios.get(`/api/post/${path}`);
+      const res = await axios.get(`http://3.99.131.208:8000/api/post/${path}`);
       setPost(res.data);
       setTitle(res.data.title);
       setBanner(res.data.photo);
@@ -63,21 +69,24 @@ function SinglePost() {
       title: title,
       description: desc,
     };
-    console.log(banner);
     await axios
-      .put(`/api/post/${path}`, updatedPost)
+      .put(`http://3.99.131.208:8000/api/post/${path}`, updatedPost)
       .then(async (res) => {
         setUpdateMode(false);
         if (post.photo !== banner) {
-          await axios.delete(post.photo).then(() => {
-            navigate(0);
-            setPost(res.data);
-          });
+          await axios
+            .delete(`http://3.99.131.208:8000${post.photo}`)
+            .then(() => {
+              navigate(0);
+              setPost(res.data);
+            });
         }
       })
       .catch(async () => {
         if (post.photo !== banner)
-          await axios.delete(banner).then(() => setBanner(post.photo));
+          await axios
+            .delete(`http://3.99.131.208:8000${banner}`)
+            .then(() => setBanner(post.photo));
         // deletes existing banner if post banner cant be updated
       });
   };
@@ -91,10 +100,10 @@ function SinglePost() {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`/api/post/${path}`);
+      await axios.delete(`http://3.99.131.208:8000/api/post/${path}`);
       navigate("/");
       setUpdateMode(false);
-      await axios.delete(post.photo);
+      await axios.delete(`http://3.99.131.208:8000${post.photo}`);
     } catch (err) {
       console.log(err);
     }
@@ -109,7 +118,11 @@ function SinglePost() {
               <div className="personal-image col col-sm-2">
                 <label htmlFor="bannerInput">
                   <figure className="personal-figure">
-                    <img src={banner} className="postImg banner" alt="avatar" />
+                    <img
+                      src={`http://3.99.131.208:8000${banner}`}
+                      className="postImg banner"
+                      alt="avatar"
+                    />
                     <input
                       type="file"
                       onChange={fileSelected}
@@ -127,7 +140,11 @@ function SinglePost() {
                 </label>
               </div>
             ) : (
-              <img src={post.photo} alt="" className="singlePostImg" />
+              <img
+                src={`http://3.99.131.208:8000${post.photo}`}
+                alt=""
+                className="singlePostImg"
+              />
             )}
 
             {updateMode ? (
@@ -163,7 +180,7 @@ function SinglePost() {
                   <b> {post?.user}</b>
                   <img
                     style={{ width: "40px", height: "40px" }}
-                    src={avatar}
+                    src={`http://3.99.131.208:8000${avatar}`}
                     alt="Avatar"
                     className="avatar m-1"
                   ></img>
